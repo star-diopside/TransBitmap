@@ -1,4 +1,4 @@
-﻿namespace TransBitmap
+﻿namespace TransBitmap.Forms
 {
     partial class MainForm
     {

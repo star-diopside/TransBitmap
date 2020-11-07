@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace TransBitmap
+namespace TransBitmap.Forms
 {
     public partial class MainForm : Form
     {
@@ -31,23 +31,23 @@ namespace TransBitmap
                 }
                 catch (ArgumentException ex)
                 {
-                    MessageBox.Show(this, ex.Message, "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, ex.Message, "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         /// <summary>
-        /// “Ç‚İ‚İ‰Â”\‚È‰æ‘œƒtƒ@ƒCƒ‹‚ÌƒtƒBƒ‹ƒ^•¶š—ñ‚ğæ“¾‚·‚éB
+        /// èª­ã¿è¾¼ã¿å¯èƒ½ãªç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
         /// </summary>
-        /// <param name="isEncode">•Û‘¶‚Ég—p‰Â”\‚Èƒtƒ@ƒCƒ‹‚ÌƒtƒBƒ‹ƒ^•¶š—ñæ“¾‚Í trueA“Ç‚İ‚İ‰Â”\‚Èƒtƒ@ƒCƒ‹‚ÌƒtƒBƒ‹ƒ^•¶š—ñæ“¾‚Í falseB</param>
-        /// <returns>“Ç‚İ‚İ‰Â”\‚È‰æ‘œƒtƒ@ƒCƒ‹‚ÌƒtƒBƒ‹ƒ^•¶š—ñ</returns>
+        /// <param name="isEncode">ä¿å­˜ã«ä½¿ç”¨å¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ—å–å¾—æ™‚ã¯ trueã€èª­ã¿è¾¼ã¿å¯èƒ½ãªãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ—å–å¾—æ™‚ã¯ falseã€‚</param>
+        /// <returns>èª­ã¿è¾¼ã¿å¯èƒ½ãªç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ—</returns>
         private string GetImageFilterString(bool isEncode)
         {
             ImageCodecInfo[] encoders;
             StringBuilder sb = new StringBuilder();
             string ext;
 
-            // g—p‰Â”\‚ÈƒGƒ“ƒR[ƒhî•ñ‚ğæ“¾‚·‚é
+            // ä½¿ç”¨å¯èƒ½ãªã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰æƒ…å ±ã‚’å–å¾—ã™ã‚‹
             if (isEncode)
             {
                 encoders = ImageCodecInfo.GetImageEncoders();
@@ -57,7 +57,7 @@ namespace TransBitmap
                 encoders = ImageCodecInfo.GetImageDecoders();
             }
 
-            // ‚·‚×‚Ä‚ÌƒCƒ[ƒWƒtƒ@ƒCƒ‹‚ÌŠg’£q‚ğ˜AŒ‹‚µ‚½•¶š—ñ‚ğ¶¬‚·‚é
+            // ã™ã¹ã¦ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ•ã‚¡ã‚¤ãƒ«ã®æ‹¡å¼µå­ã‚’é€£çµã—ãŸæ–‡å­—åˆ—ã‚’ç”Ÿæˆã™ã‚‹
             sb.Length = 0;
             foreach (ImageCodecInfo info in encoders)
             {
@@ -66,21 +66,21 @@ namespace TransBitmap
             sb.Length -= 1;
             ext = sb.ToString();
 
-            // ‚·‚×‚Ä‚ÌƒCƒ[ƒWƒtƒ@ƒCƒ‹‚É‘Î‰‚µ‚½ƒtƒBƒ‹ƒ^s‚ğ’Ç‰Á‚·‚é
+            // ã™ã¹ã¦ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾å¿œã—ãŸãƒ•ã‚£ãƒ«ã‚¿è¡Œã‚’è¿½åŠ ã™ã‚‹
             sb.Length = 0;
-            sb.AppendFormat("‚·‚×‚Ä‚ÌƒCƒ[ƒWƒtƒ@ƒCƒ‹ ({0})|{1}", ext, ext);
+            sb.AppendFormat("ã™ã¹ã¦ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ•ã‚¡ã‚¤ãƒ« ({0})|{1}", ext, ext);
 
-            // ŠeX‚ÌƒCƒ[ƒWƒtƒ@ƒCƒ‹‚É‘Î‰‚µ‚½ƒtƒBƒ‹ƒ^—ñ‚ğ’Ç‰Á‚·‚é
+            // å„ã€…ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾å¿œã—ãŸãƒ•ã‚£ãƒ«ã‚¿åˆ—ã‚’è¿½åŠ ã™ã‚‹
             foreach (ImageCodecInfo info in encoders)
             {
                 ext = info.FilenameExtension;
-                sb.AppendFormat("|{0} ƒtƒ@ƒCƒ‹ ({1})|{2}", info.FormatDescription, ext, ext);
+                sb.AppendFormat("|{0} ãƒ•ã‚¡ã‚¤ãƒ« ({1})|{2}", info.FormatDescription, ext, ext);
             }
 
-            // ‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹‚É‘Î‰‚µ‚½ƒtƒBƒ‹ƒ^—ñ‚ğ’Ç‰Á‚·‚é
-            sb.AppendFormat("|‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹ (*.*)|*.*");
+            // ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾å¿œã—ãŸãƒ•ã‚£ãƒ«ã‚¿åˆ—ã‚’è¿½åŠ ã™ã‚‹
+            sb.AppendFormat("|ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ« (*.*)|*.*");
 
-            // ¶¬‚µ‚½ƒtƒBƒ‹ƒ^•¶š—ñ‚ğ•Ô‚·
+            // ç”Ÿæˆã—ãŸãƒ•ã‚£ãƒ«ã‚¿æ–‡å­—åˆ—ã‚’è¿”ã™
             return sb.ToString();
         }
 
@@ -90,7 +90,7 @@ namespace TransBitmap
 
             if (org == null)
             {
-                MessageBox.Show(this, "‰æ‘œ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñB", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "ç”»åƒãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“ã€‚", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -117,7 +117,7 @@ namespace TransBitmap
 
             if (org == null)
             {
-                MessageBox.Show(this, "‰æ‘œ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñB", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "ç”»åƒãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“ã€‚", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -164,7 +164,7 @@ namespace TransBitmap
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, ex.ToString(), "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, ex.ToString(), "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -175,7 +175,7 @@ namespace TransBitmap
 
             if (org == null)
             {
-                MessageBox.Show(this, "‰æ‘œ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñB", "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, "ç”»åƒãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“ã€‚", "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -219,7 +219,7 @@ namespace TransBitmap
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, ex.ToString(), "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, ex.ToString(), "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -237,16 +237,16 @@ namespace TransBitmap
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, ex.Message, "ƒGƒ‰[", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, ex.Message, "ã‚¨ãƒ©ãƒ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         /// <summary>
-        /// ƒtƒ@ƒCƒ‹–¼‚ÌŠg’£q‚©‚çƒGƒ“ƒR[ƒhƒR[ƒfƒbƒN‚Ìî•ñ‚ğæ“¾‚·‚éB
+        /// ãƒ•ã‚¡ã‚¤ãƒ«åã®æ‹¡å¼µå­ã‹ã‚‰ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹ã€‚
         /// </summary>
-        /// <param name="fileName">•Û‘¶‚·‚éƒtƒ@ƒCƒ‹–¼</param>
-        /// <returns>ƒGƒ“ƒR[ƒhƒR[ƒfƒbƒN‚Ìî•ñ‚ğ¦‚· ImageCodecInfo ƒIƒuƒWƒFƒNƒg</returns>
+        /// <param name="fileName">ä¿å­˜ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+        /// <returns>ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã‚³ãƒ¼ãƒ‡ãƒƒã‚¯ã®æƒ…å ±ã‚’ç¤ºã™ ImageCodecInfo ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</returns>
         private ImageCodecInfo GetImageEncoders(string fileName)
         {
             string extension = Path.GetExtension(fileName);
