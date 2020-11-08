@@ -29,36 +29,21 @@ namespace TransBitmap.Utility
         public Bitmap ConvertBitmapWithLockBits(Bitmap org)
         {
             Bitmap trans = (Bitmap)org.Clone();
-
-            BitmapData bmpData = trans.LockBits(new Rectangle(0, 0, trans.Width, trans.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            BitmapData data = trans.LockBits(new Rectangle(0, 0, trans.Width, trans.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             try
             {
-                IntPtr ptr = bmpData.Scan0;
-                int bytes = bmpData.Height * bmpData.Stride;
+                IntPtr ptr = data.Scan0;
+                int bytes = data.Height * data.Stride;
                 byte[] rgbValues = new byte[bytes];
 
                 Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-                for (int y = 0, index0 = 0; y < bmpData.Height; y++, index0 += bmpData.Stride)
-                {
-                    for (int x = 0; x < bmpData.Width; x++)
-                    {
-                        int index = index0 + x * 3;
-
-                        (byte red, byte green, byte blue) = ConvertStrategy(rgbValues[index + 2], rgbValues[index + 1], rgbValues[index]);
-
-                        rgbValues[index] = blue;
-                        rgbValues[index + 1] = green;
-                        rgbValues[index + 2] = red;
-                    }
-                }
-
+                ConvertBitmap(rgbValues, data.Height, data.Width, data.Stride);
                 Marshal.Copy(rgbValues, 0, ptr, bytes);
             }
             finally
             {
-                trans.UnlockBits(bmpData);
+                trans.UnlockBits(data);
             }
 
             return trans;
@@ -67,36 +52,32 @@ namespace TransBitmap.Utility
         public Bitmap ConvertBitmapWithUnsafe(Bitmap org)
         {
             Bitmap trans = (Bitmap)org.Clone();
-
-            BitmapData bmpData = trans.LockBits(new Rectangle(0, 0, trans.Width, trans.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            BitmapData data = trans.LockBits(new Rectangle(0, 0, trans.Width, trans.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             try
             {
                 unsafe
                 {
-                    byte* ptr = (byte*)bmpData.Scan0;
-
-                    for (int y = 0, index0 = 0; y < bmpData.Height; y++, index0 += bmpData.Stride)
-                    {
-                        for (int x = 0; x < bmpData.Width; x++)
-                        {
-                            int index = index0 + x * 3;
-
-                            (byte red, byte green, byte blue) = ConvertStrategy(ptr[index + 2], ptr[index + 1], ptr[index]);
-
-                            ptr[index] = blue;
-                            ptr[index + 1] = green;
-                            ptr[index + 2] = red;
-                        }
-                    }
+                    ConvertBitmap(new Span<byte>((void*)data.Scan0, data.Height * data.Stride), data.Height, data.Width, data.Stride);
                 }
             }
             finally
             {
-                trans.UnlockBits(bmpData);
+                trans.UnlockBits(data);
             }
 
             return trans;
+        }
+
+        private void ConvertBitmap(Span<byte> bmp, int height, int width, int stride)
+        {
+            for (int y = 0, index0 = 0; y < height; y++, index0 += stride)
+            {
+                for (int x = 0, index = index0; x < width; x++, index += 3)
+                {
+                    (bmp[index + 2], bmp[index + 1], bmp[index]) = ConvertStrategy(bmp[index + 2], bmp[index + 1], bmp[index]);
+                }
+            }
         }
     }
 }
