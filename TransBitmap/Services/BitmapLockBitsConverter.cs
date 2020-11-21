@@ -11,7 +11,7 @@ namespace TransBitmap.Services
         {
             var copy = bitmap.Clone() as Bitmap;
             BitmapData data = copy.LockBits(new Rectangle(0, 0, copy.Width, copy.Height),
-                                            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                                            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
             try
             {
@@ -19,7 +19,7 @@ namespace TransBitmap.Services
                 byte[] rgbValues = new byte[data.Height * data.Stride];
 
                 Marshal.Copy(ptr, rgbValues, 0, rgbValues.Length);
-                Converters.ConvertBitmapColor(rgbValues, data.Height, data.Width, data.Stride, converter);
+                Converters.ConvertBitmapColor(rgbValues, data.Width, data.Height, data.Stride, converter);
                 Marshal.Copy(rgbValues, 0, ptr, rgbValues.Length);
             }
             finally

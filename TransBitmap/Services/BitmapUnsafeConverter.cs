@@ -10,14 +10,14 @@ namespace TransBitmap.Services
         {
             var copy = bitmap.Clone() as Bitmap;
             BitmapData data = copy.LockBits(new Rectangle(0, 0, copy.Width, copy.Height),
-                                            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                                            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
             try
             {
                 unsafe
                 {
                     Converters.ConvertBitmapColor(new Span<byte>((void*)data.Scan0, data.Height * data.Stride),
-                                                  data.Height, data.Width, data.Stride, converter);
+                                                  data.Width, data.Height, data.Stride, converter);
                 }
             }
             finally

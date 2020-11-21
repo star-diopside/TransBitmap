@@ -14,7 +14,7 @@ namespace TransBitmap.Services
                 {
                     Color src = bitmap.GetPixel(x, y);
                     (byte red, byte green, byte blue) = converter(src.R, src.G, src.B);
-                    newBitmap.SetPixel(x, y, Color.FromArgb(red, green, blue));
+                    newBitmap.SetPixel(x, y, Color.FromArgb(src.A, red, green, blue));
                 }
             }
 
