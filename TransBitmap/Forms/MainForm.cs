@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Windows.Forms;
 using TransBitmap.Models;
@@ -13,6 +15,7 @@ namespace TransBitmap.Forms
 {
     public partial class MainForm : Form
     {
+        private static readonly HttpClient _httpClient = new();
         private BitmapConverterSetting _setting = new(ColorSpace.Red, false, ColorSpace.Green, false, ColorSpace.Blue, false);
         private ConvertColor _convertColor = (red, green, blue) => (red, green, blue);
 
@@ -32,10 +35,9 @@ namespace TransBitmap.Forms
             {
                 try
                 {
-                    using var org = Image.FromFile(dialog.FileName);
-                    originalPicture.Image = (Image)org.Clone();
+                    originalPicture.Image = Image.FromFile(dialog.FileName);
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(this, ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -114,6 +116,21 @@ namespace TransBitmap.Forms
             return ImageCodecInfo.GetImageEncoders()
                                  .Where(info => info.FilenameExtension.Contains(extension))
                                  .FirstOrDefault();
+        }
+
+        private async void OpenUrlEvent(object sender, EventArgs e)
+        {
+            try
+            {
+                string url = Interaction.InputBox("URLを指定してください。", "URLから画像を開く");
+                var responseMessage = await _httpClient.GetAsync(url);
+                var stream = await responseMessage.Content.ReadAsStreamAsync();
+                originalPicture.Image = Image.FromStream(stream);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void FormCloseEvent(object sender, EventArgs e)
