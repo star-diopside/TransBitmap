@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using TransBitmap.Models;
-using TransBitmap.Utility;
+using TransBitmap.Services;
 
 namespace TransBitmap.Forms
 {
     public partial class MainForm : Form
     {
         private BitmapConverterSetting _setting = new(ColorSpace.Red, false, ColorSpace.Green, false, ColorSpace.Blue, false);
-        private BitmapConverter _converter = new();
+        private ConvertColor _convertColor = (red, green, blue) => (red, green, blue);
 
         public MainForm()
         {
@@ -123,20 +123,20 @@ namespace TransBitmap.Forms
 
         private void ConvertBitmapWithPixelEvent(object sender, EventArgs e)
         {
-            ConvertBitmap(_converter.ConvertBitmapWithPixel);
+            ConvertBitmap(new BitmapPixelConverter());
         }
 
         private void ConvertBitmapWithLockBitsEvent(object sender, EventArgs e)
         {
-            ConvertBitmap(_converter.ConvertBitmapWithLockBits);
+            ConvertBitmap(new BitmapLockBitsConverter());
         }
 
         private void ConvertBitmapWithUnsafeEvent(object sender, EventArgs e)
         {
-            ConvertBitmap(_converter.ConvertBitmapWithUnsafe);
+            ConvertBitmap(new BitmapUnsafeConverter());
         }
 
-        private void ConvertBitmap(Func<Bitmap, Bitmap> convert)
+        private void ConvertBitmap(IBitmapConverter converter)
         {
             if (originalPicture.Image is not Bitmap org)
             {
@@ -148,17 +148,9 @@ namespace TransBitmap.Forms
 
             try
             {
-                //_converter.ConvertStrategy = comboBox1.Text switch
-                //{
-                //    "RGB→BRG" => (red, green, blue) => (blue, red, green),
-                //    "RGB→RBG" => (red, green, blue) => (red, blue, green),
-                //    "ビット反転" => (red, green, blue) => ((byte)~red, (byte)~green, (byte)~blue),
-                //    _ => throw new InvalidOperationException()
-                //};
-
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                Bitmap trans = convert(org);
+                Bitmap trans = converter.ConvertBitmapColor(org, _convertColor);
                 stopwatch.Stop();
 
                 toolStripStatusLabel1.Text = $"画像を変換しました。(処理時間: {stopwatch.Elapsed})";
@@ -185,7 +177,7 @@ namespace TransBitmap.Forms
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 _setting = dialog.BitmapConverterSetting;
-                _converter.ConvertStrategy = _setting.GetConvertStrategy();
+                _convertColor = _setting.GetConvertStrategy();
             }
         }
     }

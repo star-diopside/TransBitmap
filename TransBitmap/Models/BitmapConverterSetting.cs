@@ -1,4 +1,5 @@
 ﻿using System;
+using TransBitmap.Services;
 
 namespace TransBitmap.Models
 {
@@ -15,7 +16,7 @@ namespace TransBitmap.Models
         ColorSpace FromBlue,
         bool ReverseBlue)
     {
-        public Func<byte, byte, byte, (byte red, byte green, byte blue)> GetConvertStrategy()
+        public ConvertColor GetConvertStrategy()
         {
             return (red, green, blue) => (ConvertColor(red, green, blue, FromRed, ReverseRed),
                                           ConvertColor(red, green, blue, FromGreen, ReverseGreen),
