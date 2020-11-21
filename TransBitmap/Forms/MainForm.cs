@@ -123,9 +123,13 @@ namespace TransBitmap.Forms
             try
             {
                 string url = Interaction.InputBox("URLを指定してください。", "URLから画像を開く");
-                var responseMessage = await _httpClient.GetAsync(url);
-                var stream = await responseMessage.Content.ReadAsStreamAsync();
-                originalPicture.Image = Image.FromStream(stream);
+
+                if (!string.IsNullOrEmpty(url))
+                {
+                    var responseMessage = await _httpClient.GetAsync(url);
+                    var stream = await responseMessage.Content.ReadAsStreamAsync();
+                    originalPicture.Image = Image.FromStream(stream);
+                }
             }
             catch (Exception ex)
             {
