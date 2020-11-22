@@ -16,7 +16,7 @@ namespace TransBitmap.Services
             {
                 unsafe
                 {
-                    Converters.ConvertBitmapColor(new Span<byte>((void*)data.Scan0, data.Height * data.Stride),
+                    Converters.ConvertBitmapColor(new Span<byte>((void*)data.Scan0, data.Stride * data.Height),
                                                   data.Width, data.Height, data.Stride, converter);
                 }
             }

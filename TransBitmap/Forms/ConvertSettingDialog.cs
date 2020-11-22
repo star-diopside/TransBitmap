@@ -40,23 +40,15 @@ namespace TransBitmap.Forms
 
             this.BitmapConverterSetting = new()
             {
-                FromRed = ToColorSpace(comboFromRed.Text),
+                FromRed = Enum.Parse<ColorSpace>(comboFromRed.Text),
                 ReverseRed = checkReverseRed.Checked,
-                FromGreen = ToColorSpace(comboFromGreen.Text),
+                FromGreen = Enum.Parse<ColorSpace>(comboFromGreen.Text),
                 ReverseGreen = checkReverseGreen.Checked,
-                FromBlue = ToColorSpace(comboFromBlue.Text),
+                FromBlue = Enum.Parse<ColorSpace>(comboFromBlue.Text),
                 ReverseBlue = checkReverseBlue.Checked
             };
             this.DialogResult = DialogResult.OK;
             Close();
         }
-
-        private static ColorSpace ToColorSpace(string s) => s switch
-        {
-            "Red" => ColorSpace.Red,
-            "Green" => ColorSpace.Green,
-            "Blue" => ColorSpace.Blue,
-            _ => throw new ArgumentException("Invalid enum value: " + s, nameof(s))
-        };
     }
 }

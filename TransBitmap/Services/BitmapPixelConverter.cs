@@ -8,9 +8,9 @@ namespace TransBitmap.Services
         {
             var newBitmap = new Bitmap(bitmap.Width, bitmap.Height, bitmap.PixelFormat);
 
-            for (int x = 0; x < bitmap.Width; x++)
+            for (int y = 0; y < bitmap.Height; y++)
             {
-                for (int y = 0; y < bitmap.Height; y++)
+                for (int x = 0; x < bitmap.Width; x++)
                 {
                     Color src = bitmap.GetPixel(x, y);
                     (byte red, byte green, byte blue) = converter(src.R, src.G, src.B);

@@ -207,7 +207,7 @@ namespace TransBitmap.Forms
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 _setting = dialog.BitmapConverterSetting;
-                _convertColor = _setting.GetConvertStrategy();
+                _convertColor = _setting.ConvertStrategy;
             }
         }
     }

@@ -16,7 +16,7 @@ namespace TransBitmap.Services
             try
             {
                 IntPtr ptr = data.Scan0;
-                byte[] rgbValues = new byte[data.Height * data.Stride];
+                byte[] rgbValues = new byte[data.Stride * data.Height];
 
                 Marshal.Copy(ptr, rgbValues, 0, rgbValues.Length);
                 Converters.ConvertBitmapColor(rgbValues, data.Width, data.Height, data.Stride, converter);

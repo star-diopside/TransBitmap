@@ -22,12 +22,10 @@ namespace TransBitmap.Models
 
         public bool ReverseBlue { get; init; } = false;
 
-        public ConvertColor GetConvertStrategy()
-        {
-            return (red, green, blue) => (ConvertColor(red, green, blue, FromRed, ReverseRed),
-                                          ConvertColor(red, green, blue, FromGreen, ReverseGreen),
-                                          ConvertColor(red, green, blue, FromBlue, ReverseBlue));
-        }
+        public ConvertColor ConvertStrategy =>
+            (red, green, blue) => (ConvertColor(red, green, blue, FromRed, ReverseRed),
+                                   ConvertColor(red, green, blue, FromGreen, ReverseGreen),
+                                   ConvertColor(red, green, blue, FromBlue, ReverseBlue));
 
         private static byte ConvertColor(byte red, byte green, byte blue, ColorSpace fromColor, bool reverse)
         {
