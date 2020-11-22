@@ -16,7 +16,7 @@ namespace TransBitmap.Forms
     public partial class MainForm : Form
     {
         private static readonly HttpClient _httpClient = new();
-        private BitmapConverterSetting _setting = new(ColorSpace.Red, false, ColorSpace.Green, false, ColorSpace.Blue, false);
+        private BitmapConverterSetting _setting = new();
         private ConvertColor _convertColor = (red, green, blue) => (red, green, blue);
 
         public MainForm()
@@ -55,7 +55,16 @@ namespace TransBitmap.Forms
             {
                 try
                 {
-                    transformPicture.Image.Save(dialog.FileName, GetImageEncoder(dialog.FileName), null);
+                    var info = GetImageEncoder(dialog.FileName);
+
+                    if (info == null)
+                    {
+                        transformPicture.Image.Save(dialog.FileName);
+                    }
+                    else
+                    {
+                        transformPicture.Image.Save(dialog.FileName, info, null);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -103,7 +112,7 @@ namespace TransBitmap.Forms
         /// </summary>
         /// <param name="fileName">保存するファイル名</param>
         /// <returns>エンコードコーデックの情報を示す ImageCodecInfo オブジェクト</returns>
-        private static ImageCodecInfo GetImageEncoder(string fileName)
+        private static ImageCodecInfo? GetImageEncoder(string fileName)
         {
             string extension = Path.GetExtension(fileName);
 
@@ -114,7 +123,7 @@ namespace TransBitmap.Forms
 
             extension = "*" + extension;
             return ImageCodecInfo.GetImageEncoders()
-                                 .Where(info => info.FilenameExtension.Contains(extension))
+                                 .Where(info => info.FilenameExtension?.Contains(extension) ?? false)
                                  .FirstOrDefault();
         }
 

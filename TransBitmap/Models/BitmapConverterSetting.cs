@@ -8,14 +8,20 @@ namespace TransBitmap.Models
         Red, Green, Blue
     }
 
-    public record BitmapConverterSetting(
-        ColorSpace FromRed,
-        bool ReverseRed,
-        ColorSpace FromGreen,
-        bool ReverseGreen,
-        ColorSpace FromBlue,
-        bool ReverseBlue)
+    public record BitmapConverterSetting
     {
+        public ColorSpace FromRed { get; init; } = ColorSpace.Red;
+
+        public bool ReverseRed { get; init; } = false;
+
+        public ColorSpace FromGreen { get; init; } = ColorSpace.Green;
+
+        public bool ReverseGreen { get; init; } = false;
+
+        public ColorSpace FromBlue { get; init; } = ColorSpace.Blue;
+
+        public bool ReverseBlue { get; init; } = false;
+
         public ConvertColor GetConvertStrategy()
         {
             return (red, green, blue) => (ConvertColor(red, green, blue, FromRed, ReverseRed),

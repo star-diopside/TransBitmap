@@ -9,7 +9,7 @@ namespace TransBitmap.Services
     {
         public Bitmap ConvertBitmapColor(Bitmap bitmap, ConvertColor converter)
         {
-            var copy = bitmap.Clone() as Bitmap;
+            var copy = (Bitmap)bitmap.Clone();
             BitmapData data = copy.LockBits(new Rectangle(0, 0, copy.Width, copy.Height),
                                             ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 

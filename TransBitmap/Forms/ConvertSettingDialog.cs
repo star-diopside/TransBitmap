@@ -6,7 +6,7 @@ namespace TransBitmap.Forms
 {
     public partial class ConvertSettingDialog : Form
     {
-        private BitmapConverterSetting _bitmapConverterSetting;
+        private BitmapConverterSetting _bitmapConverterSetting = new();
 
         public BitmapConverterSetting BitmapConverterSetting
         {
@@ -38,13 +38,15 @@ namespace TransBitmap.Forms
                 return;
             }
 
-            this.BitmapConverterSetting = new(
-                ToColorSpace(comboFromRed.Text),
-                checkReverseRed.Checked,
-                ToColorSpace(comboFromGreen.Text),
-                checkReverseGreen.Checked,
-                ToColorSpace(comboFromBlue.Text),
-                checkReverseBlue.Checked);
+            this.BitmapConverterSetting = new()
+            {
+                FromRed = ToColorSpace(comboFromRed.Text),
+                ReverseRed = checkReverseRed.Checked,
+                FromGreen = ToColorSpace(comboFromGreen.Text),
+                ReverseGreen = checkReverseGreen.Checked,
+                FromBlue = ToColorSpace(comboFromBlue.Text),
+                ReverseBlue = checkReverseBlue.Checked
+            };
             this.DialogResult = DialogResult.OK;
             Close();
         }
