@@ -34,7 +34,7 @@ namespace TransBitmap.Models
                 ColorSpace.Red => red,
                 ColorSpace.Green => green,
                 ColorSpace.Blue => blue,
-                _ => throw new ArgumentException("Invalid enum value: " + fromColor, nameof(fromColor))
+                _ => throw new ArgumentOutOfRangeException(nameof(fromColor))
             };
             return reverse ? (byte)~color : color;
         }
