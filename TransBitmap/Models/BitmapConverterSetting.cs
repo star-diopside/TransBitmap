@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel;
 using TransBitmap.Services;
 
 namespace TransBitmap.Models
@@ -34,7 +34,7 @@ namespace TransBitmap.Models
                 ColorSpace.Red => red,
                 ColorSpace.Green => green,
                 ColorSpace.Blue => blue,
-                _ => throw new ArgumentOutOfRangeException(nameof(fromColor))
+                _ => throw new InvalidEnumArgumentException(nameof(fromColor), (int)fromColor, typeof(ColorSpace))
             };
             return reverse ? (byte)~color : color;
         }
